@@ -2,7 +2,7 @@
 
 ## What is this?
 
-This is a wrapper for the [pynetgear library](https://github.com/MatMaul/pynetgear) so you can use ansible to retrieve hostnames and ips information about devices connected wired/wirlessly to your Netgear Cable Modem or Wifi Gear.
+This is a wrapper for the [pynetgear library](https://github.com/MatMaul/pynetgear) so you can use ansible to retrieve hostnames and IP information about devices connected wired/wirelessly to your Netgear Cable Modem or Wifi Gear.
 
 ## Where?
 
