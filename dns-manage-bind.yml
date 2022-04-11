@@ -1,0 +1,55 @@
+- name: Remove PTR record
+  community.general.nsupdate:
+    key_name: "{{ dns_key_name }}"
+    key_secret: "{{ dns_key }}"
+    server: "{{ dns_server }}"
+    record: "{{ ip | ansible.netcommon.ipaddr('revdns') }}"
+    type: "PTR"
+    state: absent
+
+- name: Remove host A,TXT, CNAME records
+  community.general.nsupdate:
+    key_name: "{{ dns_key_name }}"
+    key_secret: "{{ dns_key }}"
+    server: "{{ dns_server }}"
+    zone: "{{ dns_domain }}"
+    record: "{{ host }}"
+    type: "{{ item }}"
+    state: absent
+  loop:
+    - "CNAME"
+    - "TXT"
+    - "A"
+
+- name: Add or modify A record
+  community.general.nsupdate:
+    key_name: "{{ dns_key_name }}"
+    key_secret: "{{ dns_key }}"
+    server: "{{ dns_server }}"
+    zone: "{{ dns_domain }}"
+    record: "{{ host }}"
+    value: "{{ ip }}"
+    ttl: "{{ ttl }}"
+
+- name: Add or modify TXT record
+  community.general.nsupdate:
+    key_name: "{{ dns_key_name }}"
+    key_secret: "{{ dns_key }}"
+    server: "{{ dns_server }}"
+    zone: "{{ dns_domain }}"
+    record: "{{ host }}"
+    type: "TXT"
+    ttl: "{{ ttl }}"
+    value: ["{{ macid }}", "{{ conntype }}", "{{ device_model }}", "{{ ssid }}",  "added by ansible {{ ansible_date_time.iso8601 }}"]
+
+- name: Add PTR record
+  community.general.nsupdate:
+    key_name: "{{ dns_key_name }}"
+    key_secret: "{{ dns_key }}"
+    server: "{{ dns_server }}"
+    record: "{{ ip | ansible.netcommon.ipaddr('revdns') }}"
+    type: "PTR"
+    value: "{{ host }}.{{ dns_domain }}."
+    ttl: "{{ ttl }}"
+    state: present
+

@@ -1,0 +1,21 @@
+---
+# customize your netgear connection
+host: 192.168.1.1
+password: "admin"
+myport: 80
+# customer dns, if you don't want to use DNS, set to none
+# choose aws, bind, both, or none
+dns_provider: both
+# you should own this domain
+dns_domain: example.org
+# time to live
+ttl: "60"
+# your rndc update key
+dns_key_name: "my_rdnc_keyname"
+dns_key: "abcdefg....."
+# your bind/named server
+dns_server: 192.168.1.5
+# your aws credentials
+aws_environment:
+  AWS_ACCESS_KEY_ID: "..."
+  AWS_SECRET_KEY: "..." 

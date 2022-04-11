@@ -1,0 +1,73 @@
+- name: create dns entry
+  block:
+  - name: "Get record if it exists already"
+    route53:
+        command: get
+        zone: "{{ dns_domain }}"
+        record: "{{ host }}"
+        type: "A"
+    register: rec
+
+  - name: "Delete record if it exists already"
+    route53:
+        command: delete
+        zone: "{{ dns_domain }}"
+        record: "{{ rec.set.record }}"
+        ttl: "{{ rec.set.ttl }}"
+        type: "{{ rec.set.type }}"
+        value: "{{ rec.set.value }}"
+    when: rec.set | length > 0
+
+  - name: "Get record if it exists already"
+    route53:
+        command: get
+        zone: "{{ dns_domain }}"
+        record: "{{ host }}"
+        type: "TXT"
+    register: rec2
+
+  - name: "Delete record if it exists already"
+    route53:
+        command: delete
+        zone: "{{ dns_domain }}"
+        record: "{{ rec.set.record }}"
+        ttl: "{{ rec.set.ttl }}"
+        type: "{{ rec.set.type }}"
+        value: "{{ rec.set.value }}"
+    when: rec2.set | length > 0
+
+  rescue:
+  - debug:
+      msg: "This is normal for records not to exist."
+
+- name: create dns entry
+  block:
+  - route53:
+        command: create
+        zone: "{{ dns_domain }}"
+        record: "{{ host }}"
+        type: "A"
+        ttl: "{{ ttl }}"
+        value: "{{ ip }}"
+        wait: no
+
+  - route53:
+        command: create
+        zone: "{{ dns_domain }}"
+        record: "{{ host }}"
+        type: "TXT"
+        ttl: "{{ ttl }}"
+        value: "{{ item }}"
+        wait: no
+        overwrite: yes
+    loop:
+    - "{{ macid }}"
+    - "{{ conntype }}"
+    - "{{ device_model }}"
+    - "{{ ssid }}"
+    - "\"added by ansible {{ ansible_date_time.iso8601 }}\""
+
+  rescue:
+  - name: "Caught an error but it's cool"
+    debug:
+      msg: "Can't win them all. Check the output. Some things need massaging."

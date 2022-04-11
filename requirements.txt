@@ -1,0 +1,11 @@
+# required
+pip3 install --user pynetgear
+# [optional] for dns
+pip3 install --user install netaddr dnspython
+# [optional] for dns management using bind
+ansible-galaxy collection install community.general
+# [optional] for dns management using aws
+ansible-galaxy collection install community.aws
+# [optional] to get info on macids
+pip3 install --user maclookup-cli
+# sign up to get an api key https://macaddress.io/account/general

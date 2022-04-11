@@ -1,0 +1,75 @@
+- hosts: localhost
+  gather_facts: no
+  vars:
+    netgearhost: 10.55.101.1
+    password: "Jgk3pr640!"
+    myport: 80
+  tasks:
+  - name: Get Info on the Netgear Device
+    netgear:
+      host: "{{ netgearhost }}"
+      password: "{{ password }}"
+      port: "{{ myport }}"
+      action: get_info
+    register: results
+    #no_log: true
+
+  - name: Show Netgear Device Info
+    debug: var=results.msg
+
+  - name: Get list of devices attached to netgear
+    netgear:
+      host: "{{ netgearhost }}"
+      password: "{{ password }}"
+      port: "{{ myport }}"
+      action: get_attached_devices
+    register: results
+    no_log: true
+
+  - name: Show list of attached devices
+    debug: var=results.msg
+
+  - name: Get verbose list of devices attached to netgear
+    netgear:
+      host: "{{ netgearhost }}"
+      password: "{{ password }}"
+      port: "{{ myport }}"
+      action: get_attached_devices_2
+    register: results
+    #no_log: true
+
+  - name: Show verbose list of devices
+    debug: var=results.msg
+
+  - name: Get Traffic Meter, if enabled
+    netgear:
+      host: "{{ netgearhost }}"
+      password: "{{ password }}"
+      port: "{{ myport }}"
+      action: get_traffic_meter
+    register: results
+    no_log: true
+
+  - name: Show Traffic Meter Info, if enabled
+    debug: var=results.msg
+
+  # dangerous
+  #- name: Reboot Netgear Device
+  #  netgear:
+  #    host: "{{ netgearhost }}"
+  #    password: "{{ password }}"
+  #    port: "{{ myport }}"
+  #    action: reboot
+  #  no_log: true
+
+
+  # not implemented, coffee ran out
+  #- name: Allow or Block Devices
+  #  netgear:
+  #    host: "{{ netgearhost }}"
+  #    password: "{{ password }}"
+  #    port: "{{ myport }}"
+  #    action: allow_block_devices
+  #  register: devicelist
+  #  no_log: true
+

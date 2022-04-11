@@ -1,0 +1,52 @@
+# poll the netgear device and update your dns server
+- hosts: localhost
+  gather_facts: yes
+  environment: "{{ aws_environment }}"
+  tasks:
+  - name: Verbose list devices attached to netgear
+    netgear:
+      host: "{{ host }}"
+      password: "{{ password }}"
+      port: "{{ myport }}"
+      action: get_attached_devices_2
+    register: devicelist
+    no_log: true
+
+  - name: dump list of devices
+    debug: var=devicelist
+
+  - name: dns tasks
+    block:
+    - name: include bind dns tasks
+      include: dns-manage-bind.yml
+      vars:
+        host: "{{ device['name'] | default(device['ip'] | regex_replace('(\\.)','-'), True) | regex_replace('(_)','-') }}"
+        ip: "{{ device['ip'] }}"
+        macid: "\"macid: {{ device['mac'].strip('\"') }}\""
+        conntype: "\"conntype: {{ device['type'] }}\""
+        ssid: "\"ssid: {{ device['ssid'] }}\""
+        device_model: "\"device_model: {{ device['device_model']  | default('Unknown',True) | regex_escape()}}\""
+      loop: "{{ devicelist.msg }}"
+      loop_control:
+        loop_var: device
+      when: dns_provider == "bind" or dns_provider == "both"
+
+    - name: include aws dns tasks
+      include: dns-manage-aws.yml
+      vars:
+        host: "{{ device['name'] | default(device['ip'] | regex_replace('(\\.)','-'), True) | regex_replace('(_)','-') }}.{{ dns_domain }}"
+        ip: "{{ device['ip'] }}"
+        macid: "\"macid: {{ device['mac'].strip('\"') }}\""
+        conntype: "\"conntype: {{ device['type'] }}\""
+        ssid: "\"ssid: {{ device['ssid'] }}\""
+        device_model: "\"device_model: {{ device['device_model'] | default('Unknown',True) | regex_escape()}}\""
+      loop: "{{ devicelist.msg }}"
+      loop_control:
+        loop_var: device
+      when: dns_provider == "aws" or dns_provider == "both"
+
+    rescue:
+    - name: something happened working dns
+      debug:
+        msg: "failed on dns updates. check out the output with -vvv"
+
