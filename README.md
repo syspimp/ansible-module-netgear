@@ -1,18 +1,16 @@
 # Netgear Ansible Module
 
-![Before and After installing heat pump](https://raw.githubusercontent.com/syspimp/greystone-ansible/master/pics/heat-pump-energy-savings.png)
-
 ## What is this?
 
-This is a wrapper for the [pynetgear library](https://github.com/MatMaul/pynetgear) so you can use ansible to retrieve hostname and ip information from your Netgear Cable Modem or Wifi Gear.
+This is a wrapper for the [pynetgear library](https://github.com/MatMaul/pynetgear) so you can use ansible to retrieve hostnames and ips information about devices connected wired/wirlessly to your Netgear Cable Modem or Wifi Gear.
 
 ## Where?
 
-Tested on Fedora 31, ansible 2.9.14
+Tested on Fedora 31, ansible 2.9.14. 
 
 ## Why did you do it?
 
-I bought a [Netgear Cable Modem](https://www.carrier.com/residential/en/us/products/heat-pumps/25vna8/) because I hated seeing cable modem rental charges on my isp bill.  However, contrary to my google searches, I could not add static routes to the device to access the network behind my router.  Also, the Android app and Web UI were not very admin friendly.
+I bought a [Netgear CX80 Nighthawk Cable Modem](https://www.netgear.com/home/wifi/modem-routers/cax80/) because I hated seeing cable modem rental charges on my isp bill.  However, contrary to my internet searches, I could not add static routes to the CX80 to access the network behind my router.  Also, the Android app and Web UI were not very admin friendly.
 
 Then I bought a [Netgear MR60 Nighthawk Mesh Wifi 6 Router](https://www.netgear.com/support/product/mr60.aspx) to extend the wifi coverage over my property. While I could add static routes, the UI left much to be desired and to have everything work *just* the way I wanted it, I needed to integrate my DNS with the Netgear's DHCP service.
 
@@ -22,17 +20,17 @@ Let's make an Ansible module out of it!
 
 ## When did you do this?
 
-I bought a 6 pack Guiness Stout this weekend and had it working by the 2nd beer. Beers 3 through 6 got me 90% there. Coffee this moring finished 98%. I left one function, allow or block host, unimplemented because I ran out of beer.
+I bought a 6 pack of Guiness Stout this past weekend and had the ansible module working by the 2nd beer. Beers 3 through 6 got me 80% there. Coffee this moring helped me finish 98%. I left one function, allow or block host, unimplemented because I ran out of beer and it works for what I want it to do.
 
 ## How did you do it?
 
-Read the source to pynetgear, used the example, caught the output it generated, passed to ansible via a dict object, wrapped it in ansible stuff. It's pretty simple stuff, escpecially if it is already written in python.
+I read the source to pynetgear, used the given code example, caught the output it generated, passed to ansible via a dict object, wrapped it in ansible stuff. It's pretty simple stuff, escpecially if it is already written in python.
 
-This is pretty bare bones.
+This is pretty bare bones code.
 
 ## Who are you?
 
-Who has two thumbs and wants to own and manage all of his own equipment, despite companies hiding full functionality? *This guy*
+Who has two thumbs and wants to own and manage all of his own equipment, despite hardware companies hiding full functionality? *This guy*
 
 ## Conclusion?
 
@@ -40,9 +38,9 @@ It works for me. I use this to poll my netgear wifi and cable modem and I update
 
 ## For you!
 
-. Read the requirements.txt to install a couple things.
-. Update the `group_vars/all` file with your custom configuration. My wifi uses port 80, but the Cable Modem uses port 5000. Go figure.
-. Run the examples
+* Read the requirements.txt file to install a couple things.
+* Update the `group_vars/all` file with your custom configuration. My wifi uses port 80, but the Cable Modem uses port 5000. Go figure.
+* Run the examples
 
 ## Notes
 
