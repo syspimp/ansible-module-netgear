@@ -14,7 +14,7 @@ I bought a [Netgear CX80 Nighthawk Cable Modem](https://www.netgear.com/home/wif
 
 Then I bought a [Netgear MR60 Nighthawk Mesh Wifi 6 Router](https://www.netgear.com/support/product/mr60.aspx) to extend the wifi coverage over my property. While I could add static routes, the UI left much to be desired and to have everything work *just* the way I wanted it, I needed to integrate my DNS with the Netgear's DHCP service.
 
-After some internet searching, I found someone had reversed engineered the SOAP requests made from the terrible mobile app, and produced a python pip module to interact with Netgear equipment.
+After some internet searching, I found someone had reversed engineered the SOAP requests made from the terrible mobile app, and produced a python pip module to interact with Netgear equipment naamed [pynetgear](https://github.com/MatMaul/pynetgear). Check it out.
 
 Let's make an Ansible module out of it!
 
