@@ -42,6 +42,10 @@ It works for me. I use this to poll my netgear wifi and cable modem and I update
 * Update the `group_vars/all` file with your custom configuration. My wifi uses port 80, but the Cable Modem uses port 5000. Go figure.
 * Run the examples
 
+## Updates
+
+* 2022-06-26 HOLY SMOKES I UPDATED THIS. I updated the firmware on my Mesh Wifi and this stopped working because I didn't set ssl properly. SSL over port 443 is the default now, so the default is ssl = True in the code, but you can override it, check the example for details.  You can also override on the command line like so: ansible-playbook -e 'ssl=no' netgear-examples.yml' Also .updated the pyneatgear requirements to the latest version.
+
 ## Notes
 
 * function `allow_block_devices` is a stub, needs implementing
@@ -54,8 +58,10 @@ $ git clone https://github.com/syspimp/ansible-module-netgear.git
 $ cd ansible-module-netgear
 # edit the group_vars/all with your router and dns info
 $ vi group_vars_all
-# install the pip dependencies
+# install the pip dependencies if you don't have them
 $ pip3 install --user pynetgear netaddr dnspython
+# OR upgrade to the latest version of the pip dependencies
+$ pip3 install --user -U pynetgear netaddr dnspython
 # run the playbook
 $ ansible-playbook netgear-examples.yml -v
 Using /etc/ansible/ansible.cfg as config file

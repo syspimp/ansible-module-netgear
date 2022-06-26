@@ -121,7 +121,7 @@ def main():
             password=dict(required=True, default=None, type='str'),
             host=dict(required=False, default='routerlogin.net', type='str'),
             port=dict(required=False, default=5000, type='int'),
-            ssl=dict(required=False, action='store_true'),
+            ssl=dict(required=False, default=True, type='bool', action='store_true'),
             url=dict(required=False, default=None, type='str'),
             action=dict(required=False, default="login", action='str'),
             force_login_v1=dict(required=False, action='store_true'),
@@ -130,7 +130,8 @@ def main():
         supports_check_mode=False
     )
 
-    # Validate module
+    # Validate module?
+    # WE DON'T NEED NO STINKIN VALIDATION
     #module = netgear_module_validation(module)
 
     # Get ansible arguments
@@ -143,78 +144,126 @@ def main():
     action = module.params.get('action')
     myforce1 = module.params.get('force_login_v1')
     myforce2 = module.params.get('force_login_v2')
-    netgear = Netgear(password=mypassword)
 
     netgear = Netgear(password=mypassword,host=myhost,user=myuser,port=myport,
             ssl=myssl,url=myurl,force_login_v1=myforce1,force_login_v2=myforce2)
     if action == "login":
-       output = dict(
-         msg=netgear.login(),
-         changed=True,
-         skipped=False
-       )
+        try:
+            output = dict(
+                    msg=netgear.login(),
+                    changed=True,
+                    skipped=False
+                    )
+        except Exception as e:
+            output = dict(
+                    msg=e,
+                    changed=False,
+                    skipped=False
+                    )
     elif action == "get_attached_devices":
-       results = []
-       for dev in netgear.get_attached_devices():
-            details={}
-            details['name'] = dev[0]
-            details['ip'] = dev[1]
-            details['mac'] = dev[2]
-            details['type'] = dev[3]
-            details['signal'] = dev[4]
-            details['link_rate'] = dev[5]
-            details['allow_or_block'] = dev[6]
-            results.append(details)
-       output = dict(
-         msg=results,
-         changed=True,
-         skipped=False
-       )
+        try:
+            results = []
+            for dev in netgear.get_attached_devices():
+                details={}
+                details['name'] = dev[0]
+                details['ip'] = dev[1]
+                details['mac'] = dev[2]
+                details['type'] = dev[3]
+                details['signal'] = dev[4]
+                details['link_rate'] = dev[5]
+                details['allow_or_block'] = dev[6]
+                results.append(details)
+            output = dict(
+             msg=results,
+             changed=True,
+             skipped=False
+            )
+        except Exception as e:
+            output = dict(
+                    msg=e,
+                    changed=False,
+                    skipped=False
+                    )
     elif action == "get_attached_devices_2":
-       results = []
-       for dev in netgear.get_attached_devices_2():
-            details={}
-            details['name'] = dev[0]
-            details['ip'] = dev[1]
-            details['mac'] = dev[2]
-            details['type'] = dev[3]
-            details['signal'] = dev[4]
-            details['link_rate'] = dev[5]
-            details['allow_or_block'] = dev[6]
-            details['device_type'] = dev[7]
-            details['device_model'] = dev[8]
-            details['ssid'] = dev[9]
-            details['conn_ap_mac'] = dev[10]
-            results.append(details)
-       output = dict(
-         msg=results,
-         changed=True,
-         skipped=False
-       )
+        try:
+            results = []
+            for dev in netgear.get_attached_devices_2():
+                details={}
+                details['name'] = dev[0]
+                details['ip'] = dev[1]
+                details['mac'] = dev[2]
+                details['type'] = dev[3]
+                details['signal'] = dev[4]
+                details['link_rate'] = dev[5]
+                details['allow_or_block'] = dev[6]
+                details['device_type'] = dev[7]
+                details['device_model'] = dev[8]
+                details['ssid'] = dev[9]
+                details['conn_ap_mac'] = dev[10]
+                results.append(details)
+            output = dict(
+             msg=results,
+             changed=True,
+             skipped=False
+            )
+        except Exception as e:
+            output = dict(
+                    msg=e,
+                    changed=False,
+                    skipped=False
+                    )
     elif action == "get_traffic_meter":
-       output = dict(
-         msg=netgear.get_traffic_meter(),
-         changed=True,
-         skipped=False
-       )
+        try:
+            output = dict(
+             msg=netgear.get_traffic_meter(),
+             changed=True,
+             skipped=False
+            )
+        except Exception as e:
+            output = dict(
+                    msg=e,
+                    changed=False,
+                    skipped=False
+                    )
     elif action == "allow_block_device":
-       output = dict(
-         msg=netgear.allow_block_device(),
-         changed=True,
-         skipped=False
-       )
+        try:
+            output = dict(
+             msg=netgear.allow_block_device(),
+             changed=True,
+             skipped=False
+            )
+        except Exception as e:
+            output = dict(
+                    msg=e,
+                    changed=False,
+                    skipped=False
+                    )
     elif action == "reboot":
-       output = dict(
-         msg=netgear.reboot(),
-         changed=True,
-         skipped=False
-       )
+        try:
+            output = dict(
+             msg=netgear.reboot(),
+             changed=True,
+             skipped=False
+            )
+        except Exception as e:
+            output = dict(
+                    msg=e,
+                    changed=False,
+                    skipped=False
+                    )
     elif action == "get_info":
-       output = dict(
-         msg=netgear.get_info(),
-         changed=True,
-         skipped=False
-       )
+        try:
+            output = dict(
+             msg=netgear.get_info(),
+             changed=True,
+             skipped=False
+            )
+        except Exception as e:
+            output = dict(
+                    msg=e,
+                    changed=False,
+                    skipped=False
+                    )
     else:
        output = dict(
          msg="No supported action specified, [login | get_attached_devices | get_attached_devices2 | get_traffic_meter | allow_block_device]",

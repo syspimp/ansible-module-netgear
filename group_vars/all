@@ -1,21 +1,31 @@
 ---
-# customize your netgear connection
+# customize the credentials to your netgear device
+# default user is always admin, but you can change it
 host: 192.168.1.1
+#user: "admin"
 password: "admin"
-myport: 80
-# customize dns, if you don't want to use DNS, set to none
+# some older devices use port 5000 with no ssl or port 80 with no ssl
+myport: 443
+#myport: 80
+#myport: 5000
+# Uncomment this line if you get errors but the credentials are correct. it might be ssl related
+# Also, update your firmware if possible! It's old and vulnerable to attack!
+#ssl: no
+
+## BONUS ##
+# update your dns server with info from your netgear, if you don't want to use DNS, set to none
 # choose aws, bind, both, or none
 dns_provider: both
 # you should own this domain
 dns_domain: example.org
 # time to live
 ttl: "60"
-# your rndc update key
+# your rndc update key for bind/named dns servers
 dns_key_name: "my_rdnc_keyname"
 dns_key: "abcdefg....."
 # your bind/named server
 dns_server: 192.168.1.5
-# your aws credentials
+# your aws credentials if you use Route53 dns service
 aws_environment:
   AWS_ACCESS_KEY_ID: "..."
   AWS_SECRET_KEY: "..." 

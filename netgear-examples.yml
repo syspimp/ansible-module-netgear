@@ -1,23 +1,36 @@
 - hosts: localhost
   gather_facts: no
+  connection: local
+  vars:
+    ## customize by editing group_vars/all
+    ## ssl is turned on by default now, you must explicitly use false|no to turn it off
+    ## if you haven't updated your firmware, try setting ssl to no
+    #ssl: no
+    ##
+    ## admin is the default user, but if you've changed it, define here
+    #user: ansible_svc_account
   tasks:
   - name: Get Info on the Netgear Device
     netgear:
       host: "{{ host }}"
+      #user: "{{ user }}"
       password: "{{ password }}"
       port: "{{ myport }}"
+      ssl: "{{ ssl }}"
       action: get_info
     register: results
-    #no_log: true
+    no_log: true
 
   - name: Show Netgear Device Info
-    debug: var=results.msg
+    debug: var=results
 
   - name: Get list of devices attached to netgear
     netgear:
       host: "{{ host }}"
+      #user: "{{ user }}"
       password: "{{ password }}"
       port: "{{ myport }}"
+      ssl: "{{ ssl }}"
       action: get_attached_devices
     register: results
     no_log: true
@@ -28,11 +41,13 @@
   - name: Get verbose list of devices attached to netgear
     netgear:
       host: "{{ host }}"
+      #user: "{{ user }}"
       password: "{{ password }}"
       port: "{{ myport }}"
+      ssl: "{{ ssl }}"
       action: get_attached_devices_2
     register: results
-    #no_log: true
+    no_log: true
 
   - name: Show verbose list of devices
     debug: var=results.msg
@@ -40,21 +55,27 @@
   - name: Get Traffic Meter, if enabled
     netgear:
       host: "{{ host }}"
+      #user: "{{ user }}"
       password: "{{ password }}"
       port: "{{ myport }}"
+      ssl: "{{ ssl }}"
       action: get_traffic_meter
     register: results
+    ignore_errors: yes
     no_log: true
 
   - name: Show Traffic Meter Info, if enabled
     debug: var=results.msg
+    when: results.failed == false
 
   # dangerous
   #- name: Reboot Netgear Device
   #  netgear:
   #    host: "{{ host }}"
+  #    user: "{{ user }}"
   #    password: "{{ password }}"
   #    port: "{{ myport }}"
+  #    ssl: "{{ ssl }}"
   #    action: reboot
   #  no_log: true
 
@@ -63,8 +84,10 @@
   #- name: Allow or Block Devices
   #  netgear:
   #    host: "{{ host }}"
+  #    user: "{{ user }}"
   #    password: "{{ password }}"
   #    port: "{{ myport }}"
+  #    ssl: "{{ ssl }}"
   #    action: allow_block_devices
   #  register: devicelist
   #  no_log: true
